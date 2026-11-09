@@ -1,94 +1,277 @@
-/* Importing the custom MagicFont for Diwali text */
-@font-face {
-    font-family: 'MagicFont';
-    src: url('../assets/fonts/HarryPotter.ttf') format('truetype'); /* Adjust the path if needed */
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* Overall Landing Page Style */
+/* ===================== LANDING PAGE CSS (MOBILE FIRST) ===================== */
 .landingPage {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background: linear-gradient(135deg, #0c0f26, #1a1a2e);
-    flex-direction: column;
-}
-
-/* Harry Potter-like Text */
-.diwaliText {
-    font-family: 'MagicFont';
-    font-size: 7em;
-    color: #ffffff;
-    text-shadow: 0px 0px 8px rgba(255, 255, 153, 0.8), 
-                 0px 0px 12px rgba(255, 204, 0, 0.6);
-    animation: glow 2s infinite alternate;
-    margin-bottom: 20px;
-    text-align: center; /* Center text horizontally */
-}
-
-/* HUD-Style Enter Button */
-.enterButton {
-    background: transparent; /* Transparent background */
-    color: #ffd700;
-    border: 2px solid #0091ff; /* Gold border */
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 1.2em;
-    cursor: pointer;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: radial-gradient(ellipse at 50% 60%, #1c0008 0%, #090014 50%, #000 100%);
+    font-family: 'Poppins', sans-serif;
     position: relative;
-    overflow: hidden;
-    transition: color 0.3s;
-    text-transform: uppercase; /* Uppercase text for HUD style */
+    padding: 16px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
-/* Gradient border effect */
-.enterButton::before {
-    content: '';
+/* Background canvas particles */
+.particle-canvas {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(135deg, #009cfe, #ff8000, #00c8ff);
-    border-radius: 10px;
-    z-index: -1;
-    filter: blur(6px); /* Softens the glow */
-    transition: opacity 0.3s;
-    opacity: 0.7;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
 }
 
-/* Pulsing animation */
-.enterButton::after {
-    content: '';
+/* ---- Rangoli rings ---- */
+.rangoli-ring {
     position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(135deg, #00aaff, #ff8000, #0f93b4);
-    border-radius: 10px;
-    z-index: -2;
-    opacity: 0;
-    filter: blur(10px);
-    animation: pulse 2s infinite alternate;
+    width: clamp(280px, 75vw, 550px);
+    height: clamp(280px, 75vw, 550px);
+    border: 1.5px dashed rgba(255, 185, 0, 0.28);
+    border-radius: 50%;
+    animation: rotateSlow 40s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+.rangoli-ring.inner {
+    width: clamp(200px, 55vw, 400px);
+    height: clamp(200px, 55vw, 400px);
+    border-style: dotted;
+    border-color: rgba(255, 100, 0, 0.35);
+    animation: rotateRev 28s linear infinite;
+}
+.rangoli-ring.innermost {
+    width: clamp(140px, 38vw, 260px);
+    height: clamp(140px, 38vw, 260px);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    animation: rotateSlow 18s linear infinite;
+}
+@keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes rotateRev  { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+
+/* ---- Top diya strip ---- */
+.diya-strip {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 10px;
+    z-index: 3;
+    pointer-events: none;
+}
+.strip-diya {
+    font-size: clamp(1.2em, 4vw, 1.6em);
+    animation: diyaFlicker 2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 8px rgba(255, 140, 0, 0.9));
 }
 
-@keyframes pulse {
-    from {
-        opacity: 0.4;
-    }
-    to {
-        opacity: 0.8;
-    }
+/* ---- Floating Diyas ---- */
+.diya {
+    position: absolute;
+    font-size: clamp(1.6em, 5vw, 2.4em);
+    animation: floatDiya 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 16px rgba(255, 140, 0, 0.95));
+    pointer-events: none;
+    z-index: 2;
+}
+.diya:nth-child(2) { top: 12%; left: 8%;  animation-delay: 0s; }
+.diya:nth-child(3) { top: 18%; right: 8%; animation-delay: 1.2s; }
+.diya:nth-child(4) { bottom: 16%; left: 7%; animation-delay: 2.4s; }
+.diya:nth-child(5) { bottom: 12%; right: 7%; animation-delay: 3.6s; }
+.diya:nth-child(6) { top: 48%; left: 3%; animation-delay: 1.8s; }
+
+@keyframes floatDiya {
+    0%, 100% { transform: translateY(0) rotate(-6deg); }
+    50%      { transform: translateY(-16px) rotate(6deg); }
 }
 
-/* Hover effect for additional glow */
-.enterButton:hover {
-    color: #00ddff;
+/* ---- Floating Lanterns ---- */
+.lantern {
+    position: absolute;
+    font-size: clamp(1.8em, 6vw, 2.6em);
+    animation: floatLantern 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px rgba(255, 60, 0, 0.85));
+    pointer-events: none;
+    z-index: 2;
+}
+.lantern:nth-child(7) { top: 6%;  left: 22%;  animation-delay: 0.5s; }
+.lantern:nth-child(8) { top: 8%;  right: 22%; animation-delay: 2.5s; }
+.lantern:nth-child(9) { bottom: 8%; left: 45%; animation-delay: 4s; }
+
+@keyframes floatLantern {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-20px); }
 }
 
-.enterButton:hover::before {
-    opacity: 1;
+/* ---- Main Content Wrapper ---- */
+.landing-title-wrap {
+    z-index: 5;
+    position: relative;
+    max-width: 600px;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.landing-subtitle {
+    font-size: clamp(0.72em, 2.5vw, 0.9em);
+    font-weight: 500;
+    letter-spacing: 0.35em;
+    color: #ffd700;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    text-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
+    animation: fadeInDown 1s ease both;
+}
+
+.diwaliText {
+    font-family: 'MagicFont', cursive, sans-serif;
+    font-size: clamp(3.2em, 13vw, 6.2em);
+    background: linear-gradient(180deg, #fff9c4 0%, #ffd700 35%, #ff9900 70%, #ff4400 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 25px rgba(255,160,0,0.8)) drop-shadow(0 0 50px rgba(255,60,0,0.4));
+    animation: flameGlow 2.8s ease-in-out infinite alternate;
+    line-height: 1.1;
+    margin: 4px 0;
+}
+
+@keyframes flameGlow {
+    0%   { filter: drop-shadow(0 0 16px rgba(255,160,0,0.6)) drop-shadow(0 0 40px rgba(255,60,0,0.3)); }
+    100% { filter: drop-shadow(0 0 35px rgba(255,210,0,1))   drop-shadow(0 0 75px rgba(255,80,0,0.7)); }
+}
+
+/* 🌟 ULTRA HIGH CONTRAST & VISIBLE ABHAY BADGE FOR FRIENDS 🌟 */
+.landing-abhay-badge {
+    margin: 14px auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 22px;
+    max-width: 92%;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #FFE873 0%, #FFD700 45%, #FFA000 100%);
+    border: 2px solid #FFFFFF;
+    box-shadow: 
+        0 0 24px rgba(255, 215, 0, 0.95), 
+        0 4px 18px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    animation: badgeBounce 2.2s ease-in-out infinite alternate;
+}
+
+.landing-abhay-badge .badge-label {
+    font-size: clamp(0.92em, 3.4vw, 1.25em);
+    font-weight: 900;
+    color: #1a0500; /* Deep dark bold text for ultra contrast against bright gold */
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+}
+
+.landing-abhay-badge .badge-sparkle {
+    font-size: 1.2em;
+    animation: sparkleSpin 3s linear infinite;
+}
+.landing-abhay-badge .badge-diya {
+    font-size: 1.2em;
+}
+
+@keyframes badgeBounce {
+    0%   { transform: scale(1);    box-shadow: 0 0 18px rgba(255, 215, 0, 0.8), 0 3px 12px rgba(0,0,0,0.5); }
+    100% { transform: scale(1.04); box-shadow: 0 0 32px rgba(255, 215, 0, 1), 0 0 45px rgba(255, 140, 0, 0.7), 0 5px 20px rgba(0,0,0,0.6); }
+}
+
+@keyframes sparkleSpin {
+    0%   { transform: rotate(0deg) scale(1); }
+    50%  { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.diwali-emoji-row {
+    font-size: clamp(1.3em, 4.5vw, 1.8em);
+    margin: 8px 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+.diwali-emoji-row span {
+    animation: emojiBounce 2s ease-in-out infinite;
+    display: inline-block;
+}
+.diwali-emoji-row span:nth-child(even) { animation-delay: 0.3s; }
+.diwali-emoji-row span:nth-child(odd)  { animation-delay: 0.6s; }
+@keyframes emojiBounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
+}
+
+.landing-tagline {
+    font-size: clamp(0.82em, 2.7vw, 1.05em);
+    color: rgba(255, 235, 180, 0.95);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.45;
+    margin: 6px auto 0;
+    max-width: 90%;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+/* ---- Big Thumb-Friendly Enter Button ---- */
+.enterButton {
+    z-index: 5;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 36px;
+    min-height: 52px;
+    max-width: 90%;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.95em, 3.6vw, 1.15em);
+    font-weight: 800;
+    color: #120000;
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+    border: 2px solid #FFF8DC;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 26px rgba(255, 120, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    letter-spacing: 0.05em;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.enterButton:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 14px rgba(255, 120, 0, 0.9);
+}
+
+.btn-sparkle {
+    font-size: 1.2em;
+}
+
+.landing-subfooter {
+    z-index: 5;
+    margin-top: 18px;
+    font-size: clamp(0.68em, 2.2vw, 0.8em);
+    color: rgba(255, 185, 0, 0.6);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+}
+
+/* Mobile specific tuning */
+@media (max-width: 480px) {
+    .landingPage { padding: 12px 8px; }
+    .diya:nth-child(2), .diya:nth-child(3), .diya:nth-child(6) { display: none; }
+    .lantern:nth-child(8) { display: none; }
+    .landing-abhay-badge { padding: 8px 16px; }
 }

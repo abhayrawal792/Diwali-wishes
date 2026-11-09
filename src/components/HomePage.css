@@ -1,166 +1,275 @@
-/* Universal Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(135deg, #0c0f26, #1a1a2e);
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.5s ease; /* Smooth transition */
-}
-
+/* ===================== HOME PAGE CSS (MOBILE OPTIMIZED) ===================== */
 .homePage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: radial-gradient(ellipse at 50% 50%, #200400 0%, #0d0016 55%, #000 100%);
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    padding: 16px;
+    box-sizing: border-box;
 }
 
-.glassEffect {
-  background: rgba(0, 0, 0, 0.5); /* Darker glass effect */
-  border-radius: 15px;
-  backdrop-filter: blur(15px); /* Stronger blur for a HUD feel */
-  box-shadow: 0 4px 30px rgba(0, 255, 255, 0.3); /* Cyan shadow for a futuristic touch */
-  padding: 40px 20px;
-  text-align: center;
-  max-width: 400px;
-  width: 100%;
-  position: relative; /* Required for pseudo-elements */
+/* Background animated glow orbs */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(75px);
+    pointer-events: none;
+    opacity: 0.35;
+    animation: orbFloat 9s ease-in-out infinite alternate;
+}
+.orb1 { width: 300px; height: 300px; background: #ff4800; top: 10%; left: 10%; }
+.orb2 { width: 260px; height: 260px; background: #9900ff; bottom: 10%; right: 10%; animation-delay: 3s; }
+.orb3 { width: 220px; height: 220px; background: #ffaa00; top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 6s; }
+
+@keyframes orbFloat {
+    0%   { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.2) translate(15px, -15px); }
 }
 
-/* Adding HUD style glow effect */
-.glassEffect::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 15px;
-  background: linear-gradient(135deg, rgba(0, 255, 255, 0.4), rgba(0, 42, 255, 0.4));
-  opacity: 0.4; /* Slight opacity for a glowing effect */
-  filter: blur(20px);
-  z-index: -1; /* Behind the content */
+/* Diya rows */
+.diya-row {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 10px;
+    z-index: 1;
+    pointer-events: none;
+}
+.diya-row.top    { top: 10px; }
+.diya-row.bottom { bottom: 10px; }
+.row-diya {
+    font-size: clamp(1.2em, 3.8vw, 1.6em);
+    animation: diyaBob 2.2s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 8px rgba(255, 140, 0, 0.9));
+}
+@keyframes diyaBob {
+    from { opacity: 0.6; transform: scale(0.92) translateY(0); }
+    to   { opacity: 1;   transform: scale(1.1) translateY(-4px); }
 }
 
+/* Glass Card */
+.glassCard {
+    background: linear-gradient(135deg, rgba(22, 5, 0, 0.92), rgba(12, 0, 22, 0.92));
+    border: 1.5px solid rgba(255, 170, 0, 0.35);
+    border-radius: 26px;
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow:
+        0 0 0 1px rgba(255, 120, 0, 0.15),
+        0 25px 70px rgba(0, 0, 0, 0.75),
+        0 0 90px rgba(255, 90, 0, 0.12),
+        inset 0 1px 0 rgba(255, 200, 0, 0.18);
+    padding: 28px 24px 24px;
+    text-align: center;
+    max-width: 440px;
+    width: 92%;
+    position: relative;
+    z-index: 5;
+    animation: cardEntrance 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    box-sizing: border-box;
+}
+.card-exit { transform: scale(0.92); opacity: 0; }
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Corner decorations */
+.corner {
+    position: absolute;
+    color: rgba(255, 185, 0, 0.6);
+    font-size: 1.1em;
+}
+.corner.tl { top: 12px; left: 14px; }
+.corner.tr { top: 12px; right: 14px; }
+.corner.bl { bottom: 12px; left: 14px; }
+.corner.br { bottom: 12px; right: 14px; }
+
+.card-pattern {
+    font-size: 0.85em;
+    color: rgba(255, 175, 0, 0.45);
+    letter-spacing: 0.18em;
+    margin: 4px 0 8px;
+}
+
+/* 🌟 ULTRA HIGH CONTRAST & VISIBLE ABHAY BADGE FOR FRIENDS 🌟 */
+.home-abhay-badge {
+    margin: 8px auto 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 18px;
+    max-width: 96%;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #FFE873 0%, #FFD700 45%, #FFA000 100%);
+    border: 2px solid #FFFFFF;
+    box-shadow: 
+        0 0 22px rgba(255, 215, 0, 0.95), 
+        0 4px 16px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    animation: badgeBounce 2.2s ease-in-out infinite alternate;
+}
+
+.home-abhay-badge .badge-label {
+    font-size: clamp(0.85em, 3.2vw, 1.1em);
+    font-weight: 900;
+    color: #1a0500; /* Ultra deep dark color on bright gold for maximum visibility */
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+}
+.home-abhay-badge .badge-sparkle { font-size: 1.1em; }
+.home-abhay-badge .badge-diya { font-size: 1.1em; }
+
+/* Card icon */
+.card-icon {
+    font-size: clamp(2.4em, 8vw, 3.2em);
+    margin-bottom: 6px;
+    filter: drop-shadow(0 0 16px rgba(255, 140, 0, 1));
+    animation: pulseIcon 2s ease-in-out infinite;
+}
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.1); }
+}
+
+/* Heading */
 h1 {
-  color: #ffd700; /* Gold for the title */
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px rgba(255, 255, 0, 0.8); /* Glowing text */
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.4em, 5vw, 1.8em);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 6px;
+}
+.title-highlight {
+    background: linear-gradient(90deg, #ffd700, #ff9900, #ffd700);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+.card-subtext {
+    font-size: clamp(0.78em, 2.7vw, 0.9em);
+    color: rgba(255, 230, 175, 0.85);
+    margin-bottom: 20px;
+    line-height: 1.45;
+}
+
+/* Input Wrap */
+.input-wrap {
+    position: relative;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.float-label {
+    display: block;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: #ffd700;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .nameInput {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  background: rgba(255, 255, 255, 0.2); /* Semi-transparent input */
-  color: #fff;
-  transition: background 0.3s;
+    width: 100%;
+    padding: 14px 44px 14px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(255, 185, 0, 0.4);
+    border-radius: 14px;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px; /* >= 16px prevents iOS Safari automatic zoom */
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
-
-/* Placeholder color */
+.nameInput:focus {
+    border-color: #ffd700;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 18px rgba(255, 185, 0, 0.4);
+}
 .nameInput::placeholder {
-  color: #ddd;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.88em;
 }
 
-/* Submit Button with HUD Design */
+.input-diya {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    font-size: 1.3em;
+    pointer-events: none;
+}
+
+/* Submit Button */
 .submitButton {
-  padding: 10px 20px;
-  border: 2px solid #ffd700; /* Gold border */
-  border-radius: 5px;
-  background: transparent; /* Transparent background */
-  color: #ffd700; /* Text color */
-  cursor: pointer;
-  transition: background 0.3s, color 0.3s;
-  position: relative; /* Required for pseudo-elements */
+    width: 100%;
+    padding: 15px 20px;
+    min-height: 52px;
+    border-radius: 50px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.92em, 3.5vw, 1.05em);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    background: linear-gradient(135deg, rgba(255, 160, 0, 0.25), rgba(255, 80, 0, 0.25));
+    color: rgba(255, 255, 255, 0.4);
+    border: 1.5px solid rgba(255, 160, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    -webkit-tap-highlight-color: transparent;
+}
+.submitButton.active {
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+    color: #120000;
+    border: 2px solid #FFF8DC;
+    box-shadow: 0 6px 24px rgba(255, 120, 0, 0.75);
+}
+.submitButton.active:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 14px rgba(255, 120, 0, 0.9);
 }
 
-/* Adding glowing effect */
-.submitButton::before {
-  content: '';
-  position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
-  border-radius: 5px;
-  background: linear-gradient(135deg, #00ffff, #c300ff);
-  opacity: 0.4;
-  filter: blur(8px);
-  z-index: -1; /* Behind the button */
+.enter-hint {
+    margin-top: 12px;
+    font-size: 0.76em;
+    color: rgba(255, 200, 100, 0.6);
+}
+.enter-hint kbd {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: inherit;
 }
 
-.submitButton:hover {
-  background: #ffd700; /* Gold on hover */
-  color: #0c0f26; /* Change text color on hover */
-}
-
-/* Transition to white effect */
-body.transition-to-white {
-  background-color: white; /* Change body background to white */
-}
-
-/* Disable button during transition */
-.submitButton:disabled {
-  pointer-events: none; /* Disable button during transition */
-}
-
-/* Responsive Styles */
-
-/* Large Desktop and Desktop Screens */
-@media (min-width: 1024px) {
-  .glassEffect {
-    max-width: 400px;
-    padding: 50px 30px;
-  }
-
-  .submitButton {
-    padding: 12px 25px;
-    font-size: 16px;
-  }
-}
-
-/* Tablet Screens */
-@media (min-width: 600px) and (max-width: 1023px) {
-  .glassEffect {
-    max-width: 90%;
-    padding: 40px 20px;
-  }
-
-  h1 {
-    font-size: 1.8em;
-  }
-
-  .submitButton {
-    padding: 10px 20px;
-    font-size: 15px;
-  }
-}
-
-/* Mobile Screens */
-@media (max-width: 599px) {
-  .glassEffect {
-    max-width: 100%;
-    padding: 30px 15px;
-  }
-
-  h1 {
-    font-size: 1.5em;
-  }
-
-  .submitButton {
-    padding: 8px 18px;
-    font-size: 14px;
-  }
+@media (max-width: 480px) {
+    .glassCard { padding: 22px 18px 18px; }
+    .card-icon { font-size: 2.2em; }
 }

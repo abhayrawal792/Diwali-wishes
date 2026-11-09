@@ -1,74 +1,818 @@
+/* ===================== WISH PAGE CSS (MOBILE FESTIVE PLAYGROUND) ===================== */
 .wishPage {
-  display: flex; /* Enable flexbox */
-  flex-direction: column; /* Stack elements vertically */
-  align-items: center; /* Center items horizontally */
-  justify-content: center; /* Center items vertically */
-  height: 100vh; /* Full viewport height */
-  overflow: hidden; /* Prevent overflow */
-  color: white; /* Text color for visibility */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 65%, #240300 0%, #0d0016 50%, #000 100%);
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    cursor: crosshair;
+    padding: 42px 10px 10px;
+    box-sizing: border-box;
 }
 
-.fireworks {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw; /* Use viewport width */
-  height: 100vh; /* Use viewport height */
-  pointer-events: none; /* Allow interaction with elements above */
-  z-index: -1; /* Fireworks behind text */
+/* Screen shake on Atom Bomb explosions */
+.screen-shake {
+    animation: bombShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes bombShake {
+    10%, 90% { transform: translate3d(-3px, 2px, 0); }
+    20%, 80% { transform: translate3d(4px, -3px, 0); }
+    30%, 50%, 70% { transform: translate3d(-5px, 4px, 0); }
+    40%, 60% { transform: translate3d(5px, -4px, 0); }
 }
 
-.cursor {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: red; /* Cursor color */
-  pointer-events: none; /* Prevent cursor from blocking clicks */
+/* Fireworks canvas container */
+.fireworks-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
 }
 
-h1 {
-  text-align: center;
-  font-size: 2.5em; /* Adjust font size for better visibility */
-  margin-bottom: 20px; /* Space between text and button */
+/* Mini-Game Floating Targets */
+.game-target {
+    position: fixed;
+    font-size: clamp(2.4em, 8vw, 3.4em);
+    cursor: pointer;
+    z-index: 40;
+    filter: drop-shadow(0 0 16px rgba(255, 140, 0, 1)) drop-shadow(0 0 30px rgba(255, 40, 0, 0.8));
+    animation: targetBob 1.2s ease-in-out infinite alternate;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+@keyframes targetBob {
+    0%   { transform: scale(1) translateY(0) rotate(-10deg); }
+    100% { transform: scale(1.18) translateY(-14px) rotate(12deg); }
 }
 
-/* Style for the Start Fireworks button */
-.startfireworks {
-  display: block;
-  padding: 10px 20px;
-  font-size: 1.2em; /* Font size for the button */
-  cursor: pointer;
-  background-color: rgba(255, 204, 0, 0.8); /* Button color with transparency */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+/* Confetti */
+.confetti-piece {
+    position: fixed;
+    top: -10px;
+    width: 8px;
+    height: 15px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+    z-index: 12;
+    opacity: 0.95;
+}
+@keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
 }
 
-/* Hover effect for the button */
-.startfireworks:hover {
-  background-color: rgba(255, 204, 0, 1); /* Solid color on hover */
+/* Flying sweet icon */
+.flying-sweet {
+    position: fixed;
+    bottom: 20%;
+    font-size: 3em;
+    pointer-events: none;
+    z-index: 20;
+    animation: sweetFly 1.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes sweetFly {
+    0%   { transform: scale(0.4) translateY(0); opacity: 1; }
+    50%  { transform: scale(1.4) translateY(-120px) rotate(20deg); opacity: 1; }
+    100% { transform: scale(1) translateY(-240px) rotate(-15deg); opacity: 0; }
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  h1 {
-      font-size: 2em; /* Smaller font size for tablets */
-  }
+/* Floating lanterns */
+.lanterns-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+.wish-lantern {
+    position: absolute;
+    bottom: -60px;
+    font-size: clamp(1.8em, 5vw, 2.4em);
+    animation: riseLantern linear infinite;
+    filter: drop-shadow(0 0 18px rgba(255, 90, 0, 0.95));
+}
+@keyframes riseLantern {
+    0%   { bottom: -70px; opacity: 0; transform: translateX(0) rotate(-6deg); }
+    15%  { opacity: 0.9; }
+    85%  { opacity: 0.7; }
+    100% { bottom: 110%; opacity: 0; transform: translateX(45px) rotate(8deg); }
+}
 
-  .startfireworks {
-      font-size: 1em; /* Adjust button font size for tablets */
-      padding: 8px 16px; /* Adjust padding for tablets */
-  }
+/* ---- Top Control Bar ---- */
+.control-bar {
+    position: fixed;
+    top: 8px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 25;
+    padding: 0 8px;
+    pointer-events: auto;
+}
+.ctrl-btn {
+    background: rgba(18, 2, 28, 0.85);
+    border: 1.5px solid rgba(255, 185, 0, 0.5);
+    color: #ffd700;
+    border-radius: 50px;
+    padding: 5px 12px;
+    font-size: clamp(0.7em, 2.5vw, 0.8em);
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    -webkit-tap-highlight-color: transparent;
+}
+.ctrl-btn.active {
+    background: linear-gradient(135deg, rgba(255, 120, 0, 0.45), rgba(255, 200, 0, 0.35));
+    border-color: #ffd700;
+    box-shadow: 0 0 16px rgba(255, 190, 0, 0.5);
+    color: #fff;
+}
+.ctrl-btn:active { transform: scale(0.95); }
+
+/* 🌟 ULTRA HIGH CONTRAST & VISIBLE ABHAY BADGE FOR FRIENDS 🌟 */
+.abhay-badge {
+    margin: 0 auto 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 16px;
+    max-width: 96%;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #FFE873 0%, #FFD700 45%, #FFA000 100%);
+    border: 2px solid #FFFFFF;
+    box-shadow: 
+        0 0 22px rgba(255, 215, 0, 0.95), 
+        0 4px 16px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    animation: badgeBounce 2.2s ease-in-out infinite alternate;
+}
+.abhay-badge .badge-label {
+    font-size: clamp(0.78em, 2.9vw, 0.98em);
+    font-weight: 900;
+    color: #1a0500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+}
+.abhay-badge .badge-sparkle { font-size: 1.05em; }
+.abhay-badge .badge-diya { font-size: 1.05em; }
+
+@keyframes badgeBounce {
+    0%   { transform: scale(1);    box-shadow: 0 0 18px rgba(255, 215, 0, 0.8), 0 3px 12px rgba(0,0,0,0.5); }
+    100% { transform: scale(1.04); box-shadow: 0 0 32px rgba(255, 215, 0, 1), 0 0 45px rgba(255, 140, 0, 0.7); }
+}
+
+/* ---- Main Wish Card ---- */
+.wish-card {
+    background: linear-gradient(145deg, rgba(26, 5, 0, 0.94), rgba(14, 0, 24, 0.95));
+    border: 1.5px solid rgba(255, 175, 0, 0.35);
+    border-radius: 22px;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    box-shadow:
+        0 0 0 1px rgba(255, 120, 0, 0.15),
+        0 25px 70px rgba(0, 0, 0, 0.8),
+        0 0 100px rgba(255, 100, 0, 0.12),
+        inset 0 1px 0 rgba(255, 200, 0, 0.2);
+    padding: 16px 14px 12px;
+    text-align: center;
+    max-width: 480px;
+    width: 95%;
+    position: relative;
+    z-index: 10;
+    cursor: default;
+    opacity: 0;
+    transform: scale(0.92) translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-sizing: border-box;
+}
+.wish-card.card-visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Corner ornaments */
+.wish-corner {
+    position: absolute;
+    color: rgba(255, 175, 0, 0.5);
+    font-size: 1.05em;
+}
+.wish-corner.tl { top: 6px; left: 8px; }
+.wish-corner.tr { top: 6px; right: 8px; }
+.wish-corner.bl { bottom: 6px; left: 8px; }
+.wish-corner.br { bottom: 6px; right: 8px; }
+
+/* Title */
+.wish-title {
+    font-size: clamp(1.25em, 4.5vw, 1.65em);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin: 0;
+}
+.wish-name {
+    background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    display: inline-block;
+}
+@keyframes shimmer {
+    to { background-position: 200% center; }
+}
+
+.friend-tagline {
+    font-size: clamp(0.68em, 2.3vw, 0.78em);
+    color: rgba(255, 215, 0, 0.8);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 2px 0 8px;
+}
+
+/* Message box */
+.wish-message-box {
+    position: relative;
+    background: rgba(255, 120, 0, 0.08);
+    border: 1px solid rgba(255, 175, 0, 0.25);
+    border-radius: 12px;
+    padding: 8px 34px 8px 10px;
+    margin-bottom: 8px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+}
+.wish-message {
+    font-size: clamp(0.74em, 2.6vw, 0.84em);
+    color: rgba(255, 238, 190, 0.95);
+    line-height: 1.4;
+    font-style: italic;
+    text-align: left;
+    margin: 0;
+}
+.next-msg-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 175, 0, 0.22);
+    border: 1.5px solid rgba(255, 185, 0, 0.4);
+    color: #ffd700;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 1em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.next-msg-btn:active {
+    transform: translateY(-50%) rotate(90deg) scale(0.92);
+}
+
+/* 🎮 SCROLLABLE 5-ACTIVITY TABS 🎮 */
+.activities-tabs-scroll {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 3px 2px;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 170, 0, 0.2);
+    border-radius: 12px;
+    scrollbar-width: none;
+}
+.activities-tabs-scroll::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+    flex: 1 0 auto;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.66em, 2.4vw, 0.74em);
+    font-weight: 700;
+    color: rgba(255, 230, 180, 0.75);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+}
+.tab-btn.active {
+    background: linear-gradient(135deg, rgba(255, 140, 0, 0.55), rgba(255, 215, 0, 0.45));
+    border: 1px solid #ffd700;
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(255, 140, 0, 0.4);
+}
+
+/* Tab content area */
+.tab-content {
+    background: rgba(0, 0, 0, 0.32);
+    border: 1px solid rgba(255, 185, 0, 0.2);
+    border-radius: 14px;
+    padding: 8px 8px 10px;
+    margin-bottom: 8px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.tab-instruction {
+    font-size: clamp(0.66em, 2.3vw, 0.74em);
+    color: rgba(255, 215, 0, 0.9);
+    margin: 0 0 6px;
+    font-weight: 500;
+}
+
+/* Cracker Grid */
+.cracker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    margin-bottom: 6px;
+}
+.cracker-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(255, 185, 0, 0.25);
+    border-radius: 10px;
+    padding: 5px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.cracker-card .c-icon { font-size: 1.3em; }
+.cracker-card .c-name {
+    font-size: 0.65em;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 1px;
+}
+.cracker-card .c-desc {
+    font-size: 0.52em;
+    color: rgba(255, 200, 100, 0.7);
+}
+.cracker-card.selected {
+    background: linear-gradient(135deg, rgba(255, 120, 0, 0.4), rgba(255, 215, 0, 0.3));
+    border-color: #ffd700;
+    box-shadow: 0 0 14px rgba(255, 185, 0, 0.6);
+    transform: translateY(-2px);
+}
+.cracker-card.bomb-card.selected {
+    border-color: #ff3b30;
+    box-shadow: 0 0 14px rgba(255, 59, 48, 0.7);
+}
+
+.tab-status-strip {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68em;
+    color: rgba(255, 230, 180, 0.9);
+    margin-top: 2px;
+}
+.tab-status-strip strong { color: #ffd700; }
+.sparkler-tip { color: #ffd700; font-style: italic; font-size: 0.92em; }
+
+/* ==================== 10s GAME STYLES ==================== */
+.game-heading {
+    font-size: 0.88em;
+    font-weight: 800;
+    color: #ffd700;
+    margin: 0 0 4px;
+}
+.high-score-text {
+    font-size: 0.74em;
+    color: rgba(255, 230, 180, 0.9);
+    margin: 4px 0 8px;
+}
+.high-score-text strong { color: #ff9900; font-size: 1.2em; }
+.game-start-btn {
+    padding: 9px 18px;
+    background: linear-gradient(135deg, #FF6600, #FFD700);
+    color: #120000;
+    font-weight: 800;
+    font-size: 0.82em;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.5);
+}
+.game-hud {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.88em;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.hud-timer strong { color: #ff3b30; font-size: 1.2em; }
+.hud-score strong { color: #ffd700; font-size: 1.2em; }
+.game-live-hint {
+    font-size: 0.74em;
+    color: #00f0ff;
+    font-weight: 700;
+    animation: hintPulse 0.8s ease-in-out infinite alternate;
+}
+.game-result-title {
+    font-size: 0.95em;
+    font-weight: 900;
+    color: #ffd700;
+    margin: 0 0 4px;
+}
+.game-final-score {
+    font-size: 0.85em;
+    color: #fff;
+    margin: 0 0 8px;
+}
+.game-final-score strong { color: #ff9900; font-size: 1.3em; }
+.game-btn-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+.game-play-again-btn {
+    padding: 7px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffd700;
+    border: 1px solid #ffd700;
+    border-radius: 50px;
+    font-size: 0.74em;
+    font-weight: 700;
+    cursor: pointer;
+}
+.game-share-btn {
+    padding: 7px 12px;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.74em;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* ==================== FORTUNE STYLES ==================== */
+.fortune-heading {
+    font-size: 0.82em;
+    font-weight: 800;
+    color: #ffd700;
+    margin: 0 0 6px;
+}
+.fortune-card {
+    background: rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.fortune-card.flipping {
+    transform: rotateX(90deg);
+    opacity: 0;
+}
+.fortune-quote-mark {
+    font-size: 1.6em;
+    color: #ffd700;
+    line-height: 0;
+    margin-right: 6px;
+}
+.fortune-text {
+    font-size: clamp(0.72em, 2.5vw, 0.82em);
+    color: rgba(255, 240, 195, 0.95);
+    font-style: italic;
+    line-height: 1.4;
+    text-align: left;
+    margin: 0;
+}
+.fortune-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+.fortune-next-btn {
+    padding: 6px 10px;
+    background: linear-gradient(135deg, #FF9900, #FFD700);
+    color: #1a0500;
+    font-weight: 800;
+    font-size: 0.72em;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+}
+.fortune-wa-btn {
+    padding: 6px 10px;
+    background: rgba(37, 211, 102, 0.25);
+    border: 1px solid #25D366;
+    color: #25D366;
+    font-weight: 700;
+    font-size: 0.72em;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+/* ==================== DHOL DJ STYLES ==================== */
+.dhol-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin: 4px 0;
+}
+.dhol-pad {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid rgba(255, 185, 0, 0.3);
+    border-radius: 12px;
+    padding: 8px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.12s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.dhol-pad.pad-hit {
+    transform: scale(0.92);
+    background: linear-gradient(135deg, #FF6600, #FFD700);
+    border-color: #fff;
+    box-shadow: 0 0 16px rgba(255, 140, 0, 0.9);
+}
+.dhol-icon { font-size: 1.4em; }
+.dhol-name {
+    font-size: 0.64em;
+    font-weight: 800;
+    color: #ffffff;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+.dhol-desc {
+    font-size: 0.52em;
+    color: rgba(255, 215, 0, 0.75);
+}
+
+/* ==================== DIYAS & MITHAI STYLES ==================== */
+.diyas-row-interactive {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: 4px 0 2px;
+}
+.diya-interactive-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.diya-interactive-item:active { transform: scale(1.15); }
+.diya-flame {
+    font-size: 1.05em;
+    opacity: 0.2;
+    transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.diya-flame.flame-active {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px #ff9900) drop-shadow(0 0 16px #ff4500);
+    animation: flameBob 1.2s ease-in-out infinite alternate;
+}
+@keyframes flameBob {
+    from { transform: scale(1) translateY(0); }
+    to   { transform: scale(1.2) translateY(-2px); }
+}
+.diya-body {
+    font-size: 1.5em;
+    filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.4));
+}
+.diya-interactive-item.lit .diya-body {
+    filter: drop-shadow(0 0 12px rgba(255, 170, 0, 1));
+}
+.diya-num {
+    font-size: 0.6em;
+    font-weight: 700;
+    color: #ffd700;
+}
+.diya-status {
+    font-size: 0.68em;
+    color: #ffe600;
+    font-weight: 600;
+    margin: 2px 0 4px;
+}
+.mithai-grid.mini {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 2px;
+}
+.sweet-item-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 185, 0, 0.25);
+    border-radius: 8px;
+    padding: 5px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.sweet-item-btn:active { transform: scale(0.92); }
+.sweet-item-btn .sweet-icon { font-size: 1.25em; }
+.sweet-item-btn .sweet-name {
+    font-size: 0.6em;
+    font-weight: 700;
+    color: #fff;
+}
+.sweet-subtext {
+    font-size: 0.65em;
+    color: rgba(255, 230, 180, 0.85);
+    margin: 3px 0 0;
+    font-style: italic;
+}
+
+/* Action buttons */
+.wish-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.wish-btn {
+    padding: 10px 14px;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(0.74em, 2.7vw, 0.84em);
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.03em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* WhatsApp Share Button */
+.wish-btn.whatsapp-btn {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #ffffff;
+    font-size: clamp(0.8em, 3vw, 0.9em);
+    font-weight: 800;
+    padding: 11px 16px;
+    min-height: 42px;
+    border: 1.5px solid #70e000;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.45);
+}
+.wish-btn.whatsapp-btn:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 10px rgba(37, 211, 102, 0.8);
+}
+.wish-btn.whatsapp-btn .btn-icon { font-size: 1.15em; }
+
+.secondary-actions-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+.wish-btn.copy-btn, .wish-btn.next-quote-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffd700;
+    border: 1.5px solid rgba(255, 185, 0, 0.4);
+    backdrop-filter: blur(8px);
+}
+.wish-btn.copy-btn:active, .wish-btn.next-quote-btn:active {
+    background: rgba(255, 175, 0, 0.22);
+    transform: scale(0.95);
+}
+
+/* Abhay signature footer */
+.abhay-footer {
+    font-size: clamp(0.74em, 2.6vw, 0.84em);
+    color: #ffd700;
+    margin: 4px 0 0;
+    letter-spacing: 0.04em;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+.abhay-footer strong {
+    color: #ffffff;
+    font-weight: 800;
+    background: linear-gradient(90deg, #FFE873, #FFD700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Screen tap hint */
+.click-hint {
+    margin-top: 8px;
+    font-size: clamp(0.68em, 2.3vw, 0.78em);
+    color: rgba(255, 210, 120, 0.85);
+    z-index: 10;
+    letter-spacing: 0.04em;
+    animation: hintPulse 2.5s ease-in-out infinite;
+    pointer-events: none;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+@keyframes hintPulse {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; transform: scale(1.02); }
+}
+
+/* Modal Popup */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: modalFadeIn 0.35s ease both;
+}
+@keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-card {
+    background: linear-gradient(135deg, #240500 0%, #150020 100%);
+    border: 2px solid #ffd700;
+    border-radius: 20px;
+    padding: 22px 18px 18px;
+    text-align: center;
+    max-width: 380px;
+    width: 92%;
+    box-shadow: 0 0 35px rgba(255, 215, 0, 0.8), 0 20px 60px rgba(0,0,0,0.85);
+}
+.modal-icon { font-size: 2em; margin-bottom: 4px; }
+.modal-card h2 {
+    color: #ffd700;
+    font-size: 1.2em;
+    font-weight: 800;
+    margin: 2px 0 8px;
+}
+.abhay-modal-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #FFE873, #FFA000);
+    color: #1a0500;
+    font-weight: 900;
+    border-radius: 50px;
+    font-size: 0.78em;
+    margin-bottom: 10px;
+}
+.modal-text {
+    font-size: 0.84em;
+    color: rgba(255, 238, 190, 0.95);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    font-style: italic;
+}
+.modal-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 50px;
+    border: 2px solid #fff;
+    background: linear-gradient(135deg, #FF6600, #FFD700);
+    color: #150000;
+    font-weight: 800;
+    font-size: 0.88em;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(255, 120, 0, 0.7);
 }
 
 @media (max-width: 480px) {
-  h1 {
-      font-size: 1.5em; /* Smaller font size for mobile devices */
-  }
-
-  .startfireworks {
-      font-size: 0.9em; /* Adjust button font size for mobile */
-      padding: 6px 12px; /* Adjust padding for mobile */
-  }
+    .wishPage { padding-top: 40px; }
+    .wish-card { padding: 14px 10px 10px; width: 97%; }
 }
